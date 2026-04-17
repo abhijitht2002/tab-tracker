@@ -104,10 +104,17 @@ const getOverallAnalytics = async (req, res) => {
         const domains = await Domain.find().select("todayTime history")
 
         const now = new Date()
+
+        const todayKey = getLocalDate(now)
+
+        const yesterday = new Date()
+        yesterday.setDate(now.getDate() - 1)
+        const yesterdayKey = getLocalDate(yesterday)
+
         const last7Days = {}
 
         // last7days map
-        for (let i = 6; i >= 0; i--) {
+        for (let i = 7; i > 0; i--) {
             const d = new Date()
             d.setDate(now.getDate() - i)
 
@@ -115,17 +122,14 @@ const getOverallAnalytics = async (req, res) => {
             last7Days[key] = 0
         }
 
-        const todayKey = getLocalDate(now)
 
         domains.forEach(domain => {
-            if (last7Days[todayKey] !== undefined) {
-                last7Days[todayKey] += domain.todayTime || 0
-            }
+            // if (last7Days[todayKey] !== undefined) {
+            //     last7Days[todayKey] += domain.todayTime || 0
+            // }
 
             domain.history.forEach(entry => {
                 const entryKey = getLocalDate(new Date(entry.date))
-
-                if (entry.date === todayKey) return
 
                 if (last7Days.hasOwnProperty(entryKey)) {
                     last7Days[entryKey] += entry.timeSpent
@@ -137,8 +141,8 @@ const getOverallAnalytics = async (req, res) => {
             console.log(date, todayKey);
 
             let dayName
-            if (date === todayKey) {
-                dayName = "Today"
+            if (date === yesterdayKey) {
+                dayName = "Yesterday"
             } else {
                 dayName = new Date(date).toLocaleDateString("en-US", {
                     weekday: "short"
