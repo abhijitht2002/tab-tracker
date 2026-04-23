@@ -43,11 +43,6 @@ function AppCard({ d }) {
                     </span>
                 </div>
             </div>
-
-            {/* Limiter button */}
-            <button className="text-xs px-3 py-1.5 border border-gray-200 rounded-lg text-gray-600 hover:bg-gray-50 transition">
-                Limit
-            </button>
         </div>
     )
 }

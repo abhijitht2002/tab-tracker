@@ -64,33 +64,31 @@ function TodayChart() {
 
     return (
         <>
-            <section className='bg-white border border-gray-100 rounded-2xl p-4 shadow-sm mt-6'>
+            <div className='bg-white border border-gray-100 rounded-2xl p-4 shadow-sm'>
+                {/* Header */}
+                <div className="flex items-center justify-between mb-3">
 
-                <div>
-                    {/* Header */}
-                    <div className="flex items-center justify-between mb-3">
+                    {/* Date */}
+                    <div>
+                        <h2 className="text-sm font-medium text-gray-900">
+                            {date}
+                        </h2>
+                        <p className="text-xs text-gray-400">
+                            Today
+                        </p>
+                    </div>
 
-                        {/* Date */}
-                        <div>
-                            <h2 className="text-sm font-medium text-gray-900">
-                                {date}
-                            </h2>
-                            <p className="text-xs text-gray-400">
-                                Today
-                            </p>
-                        </div>
-
-                        {/* Time mock */}
-                        <div className="text-right">
-                            <p className="text-sm font-medium text-gray-900">
-                                {time}
-                            </p>
-                            <p className="text-xs text-gray-400">
-                                Local Time
-                            </p>
-                        </div>
+                    {/* Time */}
+                    <div className="text-right">
+                        <p className="text-sm font-medium text-gray-900">
+                            {time}
+                        </p>
+                        <p className="text-xs text-gray-400">
+                            Local Time
+                        </p>
                     </div>
                 </div>
+
 
                 <ResponsiveContainer width="100%" height={280} className='mt-4'>
                     <BarChart data={todayData}>
@@ -130,17 +128,7 @@ function TodayChart() {
                         />
                     </BarChart>
                 </ResponsiveContainer>
-
-                <div className="flex gap-2 mt-3">
-                    <div className="px-3 py-1 bg-gray-50 rounded-lg text-xs text-gray-600">
-                        ⏱ Total: {total}
-                    </div>
-
-                    {/* <div className="px-3 py-1 bg-gray-50 rounded-lg text-xs text-gray-600">
-            📊 6 apps used
-          </div> */}
-                </div>
-            </section>
+            </div >
         </>
     )
 }

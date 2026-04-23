@@ -2,7 +2,12 @@ import React, { useState } from 'react'
 import { useEffect } from 'react'
 import AppCard from './components/AppCard'
 import { Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
-import TodayChart from './components/TodayChart'
+import TodayChart from './today/TodayChart'
+import Calender from './components/calender'
+import Weekly from './week/Weekly'
+import YourApps from './features/YourApps'
+import TodayOverall from './today/TodayOverall'
+import AppUsage from './today/AppUsage'
 
 function App() {
   const [data, setData] = useState([])
@@ -21,6 +26,8 @@ function App() {
         ])
 
         const appsData = await appsRes.json()
+        console.log(appsData);
+
         const todayData = await todayRes.json()
         const overallData = await overallRes.json()
 
@@ -28,6 +35,8 @@ function App() {
         setTodayData(todayData.data)
         setTotal(todayData.total)
         setOverallData(overallData.data)
+        console.log("data: ", data);
+
       } catch (err) {
         console.log(err)
       } finally {
@@ -39,59 +48,36 @@ function App() {
   }, [])
 
   return (
-    <div className='md:max-w-5xl mx-auto p-5'>
-      <section className=''>
-        <h1 className="text-sm font-medium text-gray-500 mb-3">
-          Last 7 Days
-        </h1>
-
-        <ResponsiveContainer width="100%" height={260} className="mt-3">
-          <BarChart data={overallData}>
-            <CartesianGrid />
-
-            <XAxis
-              dataKey="day"
-              tick={{ fontSize: 12, fill: "#94a3b8" }}
-              axisLine={false}
-              tickLine={false}
-            />
-
-            <YAxis
-              tick={{ fontSize: 12, fill: "#94a3b8" }}
-              axisLine={false}
-              tickLine={false}
-            />
-
-            <Tooltip
-              cursor={{ fill: "rgba(0,0,0,0.03)" }}
-              contentStyle={{
-                borderRadius: "8px",
-                border: "1px solid #e2e8f0",
-                fontSize: "12px"
-              }}
-            />
-
-            <Bar
-              dataKey="hours"
-              fill="#6366f1"
-              radius={[6, 6, 0, 0]}
-            />
-          </BarChart>
-        </ResponsiveContainer>
+    <div className='py-5 px-8'>
+      <section>
+        <h1>Hello, User</h1>
       </section>
 
-      <TodayChart />
-
-      <section className='mt-6'>
-        <h1 className="font-medium text-gray-500 mb-3">Your Apps</h1>
-        <div className='flex flex-col gap-4'>
-          {
-            data.map((d, i) => (
-              <AppCard key={d.domain} d={d} />
-            ))
-          }
+      <div className='grid grid-cols-4 gap-4 auto-rows-[minmax(180px,auto)]'>
+        <div className='col-span-2 '>
+          <TodayChart />
         </div>
-      </section>
+
+        <div className='col-span-1 '>
+          <Calender />
+        </div>
+
+        <div className='col-span-1 row-span-2 '>
+          <TodayOverall />
+        </div>
+
+        <div className='col-span-1 '>
+          <Weekly />
+        </div>
+
+        <div className='col-span-2 '>
+          <YourApps />
+        </div>
+
+        <div className='col-span-4 '>
+          <AppUsage />
+        </div>
+      </div>
     </div>
   )
 }
