@@ -10,7 +10,6 @@ function AppUsage() {
             try {
                 const res = await fetch("http://localhost:3000/api/apps")
                 const appsData = await res.json()
-
                 setData(appsData.domains)
             } catch (err) {
                 console.log(err)
@@ -28,13 +27,13 @@ function AppUsage() {
             <div className=''>
                 <h1 className='text-sm font-medium'>Usage</h1>
 
-                <div className=''>
+                <ul className=''>
                     {data.map((d) => (
-                        <div>
+                        <li>
                             <h1>{d.domain}</h1>
-                        </div>
+                        </li>
                     ))}
-                </div>
+                </ul>
             </div>
         </div>
     )

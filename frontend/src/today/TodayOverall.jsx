@@ -69,7 +69,7 @@ function TodayOverall() {
                 {/* Scrollable list */}
                 <div className='flex flex-col gap-3 overflow-y-auto pr-1'>
                     {data.map((d, i) => (
-                        <AppCard key={d.domain} d={d} />
+                        <AppCard key={`${d.domain} - ${i}`} d={d} />
                     ))}
                 </div>
             </section>
