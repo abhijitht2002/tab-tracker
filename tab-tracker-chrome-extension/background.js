@@ -35,15 +35,17 @@ setInterval(() => {
     // send entire domains object
     chrome.storage.local.get("domains", async result => {
         const domains = result.domains || {}
-
-        await fetch("http://localhost:3000/api/time", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(domains)
-        })
+        try {
+            await fetch("http://localhost:3000/api/time", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(domains)
+            })
+            // console.log("synced");
+        } catch (err) {
+            console.log("Sync failed", err)
+        }
     })
-
-    // console.log("synced");
 }, 30000)
 
 setInterval(() => {
@@ -51,7 +53,6 @@ setInterval(() => {
         saveTime()
     }
 }, 15000)
-
 
 const isTrackable = (url) => {
     if (!url) return false
