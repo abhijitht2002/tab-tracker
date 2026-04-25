@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
 import AppCard from '../components/AppCard'
 import TodayChart from '../today/TodayChart'
-import Calender from '../components/Calender'
+import Calender from '../components/calender/Calender'
 import Weekly from '../week/Weekly'
 import YourApps from '../features/YourApps'
 import TodayOverall from '../today/TodayOverall'
@@ -26,7 +26,7 @@ function Dashboard() {
                 ])
 
                 const appsData = await appsRes.json()
-                console.log(appsData);
+                // console.log(appsData);
 
                 const todayData = await todayRes.json()
                 const overallData = await overallRes.json()
@@ -35,7 +35,7 @@ function Dashboard() {
                 setTodayData(todayData.data)
                 setTotal(todayData.total)
                 setOverallData(overallData.data)
-                console.log("data: ", data);
+                // console.log("data: ", data);
 
             } catch (err) {
                 console.log(err)

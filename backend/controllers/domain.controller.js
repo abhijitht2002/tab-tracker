@@ -71,7 +71,7 @@ const getAllApps = async (req, res) => {
                 : 0
         }))
 
-        console.log(formatted);
+        // console.log(formatted);
         res.json({ domains: formatted })
     } catch (err) {
         console.log(err);
@@ -91,7 +91,7 @@ const getAnalytics = async (req, res) => {
 
         const total = formatTime(domains.reduce((sum, d) => sum + (d.todayTime || 0), 0))
 
-        console.log(formatted);
+        // console.log(formatted);
         res.json({ total, data: formatted })
     } catch (error) {
         console.log(err);
@@ -138,7 +138,7 @@ const getOverallAnalytics = async (req, res) => {
         });
 
         const formatted = Object.entries(last7Days).map(([date, time]) => {
-            console.log(date, todayKey);
+            // console.log(date, todayKey);
 
             let dayName
             if (date === yesterdayKey) {
@@ -155,7 +155,7 @@ const getOverallAnalytics = async (req, res) => {
             }
         })
 
-        console.log(formatted);
+        // console.log(formatted);
         res.json({ data: formatted })
     } catch (err) {
         console.log(err);

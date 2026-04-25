@@ -50,7 +50,7 @@ function TodayOverall() {
 
 
     return (
-        <div className='bg-white border border-gray-100 rounded-2xl p-4 shadow-sm h-full flex flex-col overflow-y-auto sticky top-4'>
+        <div className='bg-white border border-gray-100 rounded-2xl p-4 shadow-sm h-full flex flex-col'>
 
             {/* Header */}
             <h1 className='text-sm font-medium'>Today</h1>
