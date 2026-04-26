@@ -4,53 +4,35 @@ import { Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxi
 function Weekly() {
 
     const overallData = [
-        { day: 'Fri', hours: 2.87 },
-        { day: 'Sat', hours: 1.53 },
+        { day: 'Fri', hours: 20 },
+        { day: 'Sat', hours: 50 },
         { day: 'Sun', hours: 0 },
-        { day: 'Mon', hours: 0 },
-        { day: 'Tue', hours: 0 },
-        { day: 'wed', hours: 0 },   
+        { day: 'Mon', hours: 90 },
+        { day: 'Tue', hours: 16 },
+        { day: 'wed', hours: 95 },
     ]
+    const max = Math.max(...overallData.map(d => d.hours));
 
     return (
-        <div className='bg-white border border-gray-100 rounded-2xl p-4 shadow-sm'>
-            <div>
-                <h1 className='text-sm font-medium text-gray-900'>Last 6 days</h1>
+        <div className='bg-white border border-gray-100 rounded-2xl h-full shadow-sm flex flex-col p-4'>
+            <h1 className='text-sm font-medium text-gray-900'>Last 6 days</h1>
+
+            <div className="flex items-end gap-3 mt-4 flex-1">
+                {overallData.map((d, i) => (
+                    <div key={i} className="flex-1 flex flex-col items-center w-full h-full">
+                        {/* Bar */}
+                        <div className="w-full h-full bg-gray-100 rounded overflow-hidden flex items-end">
+                            <div
+                                className="w-full bg-indigo-500 transition-all duration-300"
+                                style={{ height: `${(d.hours / max) * 100}%` }}
+                            />
+                        </div>
+
+                        {/* Label */}
+                        <span className="text-xs text-gray-500 mt-2">{d.day}</span>
+                    </div>
+                ))}
             </div>
-
-            <ResponsiveContainer width="100%" height={260} className="mt-3">
-                <BarChart data={overallData}>
-                    <CartesianGrid />
-
-                    <XAxis
-                        dataKey="day"
-                        tick={{ fontSize: 12, fill: "#94a3b8" }}
-                        axisLine={false}
-                        tickLine={false}
-                    />
-
-                    <YAxis
-                        tick={{ fontSize: 12, fill: "#94a3b8" }}
-                        axisLine={false}
-                        tickLine={false}
-                    />
-
-                    <Tooltip
-                        cursor={{ fill: "rgba(0,0,0,0.03)" }}
-                        contentStyle={{
-                            borderRadius: "8px",
-                            border: "1px solid #e2e8f0",
-                            fontSize: "12px"
-                        }}
-                    />
-
-                    <Bar
-                        dataKey="hours"
-                        fill="#6366f1"
-                        radius={[6, 6, 0, 0]}
-                    />
-                </BarChart>
-            </ResponsiveContainer>
         </div>
     )
 }

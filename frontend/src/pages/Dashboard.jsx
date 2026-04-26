@@ -54,29 +54,29 @@ function Dashboard() {
                 <Navbar />
 
                 <div className='grid flex-1 grid-cols-4 gap-4 overflow-hidden'>
-                    <div className='col-span-3 h-full'>
+                    <div className='col-span-4 md:col-span-3 h-full'>
                         <h1>Hello, user</h1>
                     </div>
 
-                    <div className='col-span-1 row-span-3 h-full'>
+                    <div className='hidden lg:grid md:col-span-1 md:row-span-3 h-full'>
                         <TodayOverall />
                     </div>
 
 
-                    <div className='col-span-2 h-full'>
+                    <div className='col-span-4 md:col-span-2 h-full'>
                         <TodayChart />
                     </div>
 
-                    <div className='col-span-1 h-full'>
+                    <div className='col-span-2 md:col-span-1 h-full'>
                         <Calender />
                     </div>
 
 
-                    <div className='col-span-1 h-full'>
+                    <div className='col-span-2 md:col-span-1 h-full'>
                         <Weekly />
                     </div>
 
-                    <div className='col-span-2 h-full'>
+                    <div className='col-span-4 md:col-span-2 h-full'>
                         <YourApps />
                     </div>
                 </div>
