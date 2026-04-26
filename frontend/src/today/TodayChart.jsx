@@ -64,7 +64,7 @@ function TodayChart() {
 
     return (
         <>
-            <div className='bg-white border border-gray-100 rounded-2xl p-4 shadow-sm'>
+            <div className='bg-white border border-gray-100 rounded-2xl p-4 shadow-sm h-full'>
                 {/* Header */}
                 <div className="flex items-center justify-between mb-3">
 

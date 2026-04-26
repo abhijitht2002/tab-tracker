@@ -10,24 +10,36 @@ function Calender() {
     const [loading, setLoading] = useState(true)
 
     const daysArr = ["S", "M", "T", "W", "T", "F", "S"]
+    const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
 
     useEffect(() => {
         const res = getCalender(year, month)
         setDays(res)
         setLoading(false)
-
     }, [year, month])
 
-    return (
-        <div className='bg-white border border-gray-100 rounded-2xl flex flex-col p-4 gap-2 shadow-sm h-full justify-between'>
+    const currentYear = today.getFullYear();
+    const years = Array.from({ length: 10 }, (_, i) => currentYear - 5 + i)
 
-            <h1 className='text-sm font-medium text-gray-900 '>
+    return (
+        <div className='bg-white border border-gray-100 rounded-2xl flex flex-col p-4 gap-2 h-full shadow-sm justify-between'>
+
+            <h1 className='text-sm font-medium text-gray-900 mb-2'>
                 Calendar
             </h1>
 
-            <div className="flex flex-col gap-2 items-center text-sm">
-                <span className="font-medium">Apr</span>
-                <span className="text-gray-500">2026</span>
+            <div className="flex  gap-2 justify-between items-center text-sm">
+                <select value={month} onChange={(e) => setMonth(Number(e.target.value))} className='px-2 py-1 border rounded-md'>
+                    {
+                        months.map((m, i) => <option key={i} value={i}>{m}</option>)
+                    }
+                </select>
+
+                <select value={year} onChange={(e) => setYear(Number(e.target.value))} className='px-2 py-1 border rounded-md'>
+                    {
+                        years.map((y, i) => <option key={i} value={y}>{y}</option>)
+                    }
+                </select>
             </div>
 
             <div>
@@ -36,7 +48,7 @@ function Calender() {
                     {daysArr.map((d, i) => (
                         <div
                             key={i}
-                            className='h-8 flex items-center justify-center text-gray-500'
+                            className='flex items-center justify-center text-gray-800'
                         >
                             {d}
                         </div>
@@ -49,7 +61,7 @@ function Calender() {
                         <div
                             key={i}
                             className={`
-          h-8 flex items-center justify-center
+          aspect-square flex items-center justify-center
           ${day.isCurrentMonth ? "text-gray-900" : "text-gray-400"}
           ${day.isToday ? "bg-blue-500 text-white rounded-full" : ""}
         `}
@@ -59,7 +71,6 @@ function Calender() {
                     ))}
                 </div>
             </div>
-
         </div>
     )
 }
