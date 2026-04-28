@@ -21,6 +21,11 @@ const domainSchema = new mongoose.Schema({
         default: 0
     },
 
+    hourly: {
+        type: Object,
+        default: {}
+    },
+
     lastUpdated: {
         type: Date,
         default: Date.now

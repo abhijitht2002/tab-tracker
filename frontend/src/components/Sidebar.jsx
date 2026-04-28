@@ -3,6 +3,7 @@ import { PiChartPieSliceDuotone } from "react-icons/pi";
 import { FaHome } from "react-icons/fa";
 import { FaCalendarWeek } from "react-icons/fa";
 import { AiTwotoneAppstore } from "react-icons/ai";
+import { IoSettingsOutline } from "react-icons/io5";
 
 function Sidebar() {
     return (
@@ -13,6 +14,7 @@ function Sidebar() {
                 <li><FaHome /></li>
                 <li><FaCalendarWeek /></li>
                 <li><AiTwotoneAppstore /></li>
+                <li><IoSettingsOutline /></li>
             </ul>
         </div>
     )

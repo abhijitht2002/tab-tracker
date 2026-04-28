@@ -15,6 +15,7 @@ const saveAndUpdateData = async (req, res) => {
                     icon: null,
                     todayTime: 0,
                     totalTime: 0,
+                    hourly: {},
                     lastUpdated: now,
                     isBlocked: false
                 })
@@ -31,11 +32,13 @@ const saveAndUpdateData = async (req, res) => {
                 })
 
                 doc.todayTime = 0
+                doc.hourly = {}
                 doc.isBlocked = false
             }
 
             doc.todayTime = data.todayTime
             doc.totalTime = data.totalTime
+            doc.hourly = data.hourly
             doc.lastUpdated = data.lastUpdated
             doc.limit = data.limit
             doc.isBlocked = data.isBlocked
@@ -45,6 +48,42 @@ const saveAndUpdateData = async (req, res) => {
         }
 
         res.json({ success: true, })
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ error: err.message })
+    }
+}
+
+const getHourlyAnalytics = async (req, res) => {
+    try {
+        const { domain } = req.params
+
+        const query = domain === "All" ? {} : { domain }
+
+        const domains = await Domain.find(query).select("domain hourly")
+
+        const usedDomainsQuery = { todayTime: { $gte: 60 } }
+        const usedDomains = await Domain.find(usedDomainsQuery).select("domain")
+
+        const hourlyTotal = {}
+
+        for (let i = 0; i < 24; i++) {
+            hourlyTotal[i] = 0
+        }
+
+        domains.forEach(doc => {
+            Object.entries(doc.hourly || {}).forEach(([h, v]) => {
+                const hour = Number(h)
+                hourlyTotal[hour] += Number(v) || 0
+            })
+        })
+
+        const formatted = Object.keys(hourlyTotal).map(h => ({
+            hour: `${h.padStart(2, "0")}`,
+            value: +(hourlyTotal[h] / 60).toFixed(1)
+        }))
+
+        res.json({ usedDomains: usedDomains.map(d => d.domain), data: formatted })
     } catch (err) {
         console.log(err);
         res.status(500).json({ error: err.message })
@@ -192,4 +231,4 @@ const formatDomainName = (domain) => {
     }
 }
 
-module.exports = { saveAndUpdateData, getAllApps, getAnalytics, getOverallAnalytics }
+module.exports = { saveAndUpdateData, getAllApps, getAnalytics, getOverallAnalytics, getHourlyAnalytics }

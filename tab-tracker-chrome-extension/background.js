@@ -17,7 +17,7 @@ const checkDailyReset = () => {
             for (const domain in domains) {
                 domains[domain].todayTime = 0
             }
-
+            ``
             chrome.storage.local.set({
                 domains,
                 lastResetDate: today
@@ -57,13 +57,16 @@ setInterval(() => {
 const isTrackable = (url) => {
     if (!url) return false
 
-    const blocked = [
-        "chrome://",
-        "chrome-extension://",
-        "http://localhost:5173"
-    ]
+    try {
+        const parsed = new URL(url)
+        if (parsed.protocol !== "http:" && parsed.protocol !== "https:") return false
+        if (parsed === "http://localhost:5173") return false
 
-    return !blocked.some(b => url.includes(b))
+        return true
+    } catch (err) {
+        console.log(err);
+        return false
+    }
 }
 
 const saveTime = () => {
@@ -83,6 +86,7 @@ const saveTime = () => {
 
     try {
         const domain = new URL(url).hostname
+        if (!domain) return
 
         chrome.storage.local.get("domains", result => {
             const domains = result.domains || {}
@@ -91,10 +95,11 @@ const saveTime = () => {
                 domains[domain] = {
                     totalTime: 0,
                     todayTime: 0,
+                    hourly: {},
                     lastUpdated: now,
                     limit: null,
                     isBlocked: false,
-                    icon: icon || null
+                    icon: icon || null,
                 }
             }
 
@@ -102,11 +107,23 @@ const saveTime = () => {
             const isNewDay = new Date(now).toDateString() !== new Date(last).toDateString()
             if (isNewDay) {
                 domains[domain].todayTime = 0
+                domains[domain].hourly = {}
             }
 
             // update times
             domains[domain].totalTime += timeSpent
             domains[domain].todayTime += timeSpent
+
+            const currentHour = new Date().getHours().toString()
+            if (!domains[domain].hourly) {
+                domains[domain].hourly = {}
+            }
+
+            if (!domains[domain].hourly[currentHour]) {
+                domains[domain].hourly[currentHour] = 0
+            }
+            domains[domain].hourly[currentHour] += timeSpent
+
             domains[domain].lastUpdated = now
 
             // save back

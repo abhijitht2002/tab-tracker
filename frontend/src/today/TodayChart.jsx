@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import { getTodayChartAPI } from '../api/api'
-import { Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
+import { Bar, BarChart, CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
+import { getTodayChartAPI } from './today.service'
 
 function TodayChart() {
     const [todayData, setTodayData] = useState([])
@@ -8,14 +8,18 @@ function TodayChart() {
     const [date, setDate] = useState("")
     const [time, setTime] = useState("")
     const [loading, setLoading] = useState(true)
+    const [usedDomains, setUsedDomains] = useState([])
+    const [selected, setSelected] = useState("All")
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const result = await getTodayChartAPI()
+                const result = await getTodayChartAPI(selected)
 
                 setTodayData(result.data)
-                setTotal(result.total)
+                setUsedDomains(result.usedDomains)
+                console.log(usedDomains);
+
             } catch (err) {
                 console.log(err)
             } finally {
@@ -24,7 +28,7 @@ function TodayChart() {
         }
 
         fetchData()
-    }, [])
+    }, [selected])
 
     const formatDate = () => {
         const now = new Date()
@@ -66,7 +70,7 @@ function TodayChart() {
         <>
             <div className='bg-white border border-gray-100 rounded-2xl p-4 shadow-sm h-full'>
                 {/* Header */}
-                <div className="flex items-center justify-between mb-3">
+                <div className="flex items-center justify-between gap-2 mb-3">
 
                     {/* Date */}
                     <div>
@@ -89,45 +93,61 @@ function TodayChart() {
                     </div>
                 </div>
 
+                <div className='text-right'>
+                    <select className='border py-1 px-2 rounded-md' value={selected} onChange={(e) => setSelected(e.target.value)}>
+                        <option value="All">All</option>
+                        {
+                            usedDomains.map((d, i) => (
+                                <option key={d} value={d}>{d}</option>
+                            ))
+                        }
+                    </select>
+                </div>
 
-                <ResponsiveContainer width="100%" height={280} className='mt-4'>
-                    <BarChart data={todayData}>
+                <div className='overflow-x-auto'>
+                    <div className='min-w-[800px]'>
+                        <ResponsiveContainer width="100%" height={280} className='mt-4'>
+                            <LineChart data={todayData} margin={{ left: -40 }}>
+                                <CartesianGrid
+                                    strokeDasharray="3 3"
+                                    vertical={false}
+                                    stroke="#f1f5f9"
+                                />
 
-                        <CartesianGrid
-                            strokeDasharray="3 3"
-                            vertical={false}
-                            stroke="#f1f5f9"
-                        />
+                                <XAxis
+                                    dataKey="hour"
+                                    tick={{ fontSize: 11, fill: "#94a3b8" }}
+                                    axisLine={false}
+                                    tickLine={false}
+                                    interval={2}
+                                />
 
-                        <XAxis
-                            dataKey="name"
-                            tick={{ fontSize: 11, fill: "#94a3b8" }}
-                            axisLine={false}
-                            tickLine={false}
-                        />
+                                <YAxis
+                                    tick={{ fontSize: 11, fill: "#94a3b8" }}
+                                    axisLine={false}
+                                    tickLine={false}
+                                />
 
-                        <YAxis
-                            tick={{ fontSize: 11, fill: "#94a3b8" }}
-                            axisLine={false}
-                            tickLine={false}
-                        />
+                                <Tooltip
+                                    cursor={{ fill: "rgba(99,102,241,0.05)" }}
+                                    contentStyle={{
+                                        borderRadius: "10px",
+                                        border: "1px solid #e2e8f0",
+                                        fontSize: "12px"
+                                    }}
+                                />
 
-                        <Tooltip
-                            cursor={{ fill: "rgba(99,102,241,0.05)" }}
-                            contentStyle={{
-                                borderRadius: "10px",
-                                border: "1px solid #e2e8f0",
-                                fontSize: "12px"
-                            }}
-                        />
-
-                        <Bar
-                            dataKey="value"
-                            fill="#6366f1"
-                            radius={[6, 6, 0, 0]}
-                        />
-                    </BarChart>
-                </ResponsiveContainer>
+                                <Line
+                                    type="monotone"
+                                    dataKey="value"
+                                    stroke="#6366f1"
+                                    strokeWidth={2}
+                                    dot={false}
+                                />
+                            </LineChart>
+                        </ResponsiveContainer>
+                    </div>
+                </div>
             </div >
         </>
     )

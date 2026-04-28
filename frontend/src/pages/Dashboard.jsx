@@ -16,37 +16,6 @@ function Dashboard() {
     const [overallData, setOverallData] = useState([])
     const [loading, setLoading] = useState(true)
 
-    useEffect(() => {
-        const fetchAll = async () => {
-            try {
-                const [appsRes, todayRes, overallRes] = await Promise.all([
-                    fetch("http://localhost:3000/api/apps"),
-                    fetch("http://localhost:3000/api/analytics/today"),
-                    fetch("http://localhost:3000/api/analytics/overall")
-                ])
-
-                const appsData = await appsRes.json()
-                // console.log(appsData);
-
-                const todayData = await todayRes.json()
-                const overallData = await overallRes.json()
-
-                setData(appsData.domains)
-                setTodayData(todayData.data)
-                setTotal(todayData.total)
-                setOverallData(overallData.data)
-                // console.log("data: ", data);
-
-            } catch (err) {
-                console.log(err)
-            } finally {
-                setLoading(false)
-            }
-        }
-
-        fetchAll()
-    }, [])
-
     return (
         <>
             <div className='flex-1 overflow-y-auto py-5 px-8'>
